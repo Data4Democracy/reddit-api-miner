@@ -1,0 +1,6 @@
+config.py
+.DS_Store
+*.ipynb
+*.ipynb*
+__pycache__
+data
