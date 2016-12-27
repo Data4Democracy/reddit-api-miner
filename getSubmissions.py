@@ -57,8 +57,8 @@ for submission in subreddit_instance.submissions():
             # print(datasets_submissions_entries)
             json_data = [convert_submission_to_dict(x) for x in datasets_submissions_entries]
             print(json_data)
-            with open(("data/" + filename + ".json"), "w") as outfile:
-                json.dump(json_data, outfile)
+            with open(("data/" + filename + ".json"), "w", encoding='utf8') as outfile:
+                json.dump(json_data, outfile, ensure_ascii=False)
             datasets_submissions_entries = []
     except Exception as e:
         print(type(e))
@@ -70,5 +70,5 @@ if (i > 0 and len(datasets_submissions_entries) > 0) :
     enddate = datasets_submissions_entries[len(datasets_submissions_entries) -1].created_utc
     filename = base_data_file_name + "-submissions-" + str(startdate) + "-" + str(enddate) + ".json"
     json_data = [convert_submission_to_dict(x) for x in datasets_submissions_entries]
-    with open(("data/" + filename), "w") as outfile:
-        json.dump(json_data, outfile)
+    with open(("data/" + filename + ".json"), "w", encoding='utf8') as outfile:
+        json.dump(json_data, outfile, ensure_ascii=False)
