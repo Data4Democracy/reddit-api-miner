@@ -5,6 +5,7 @@ import getopt
 import json
 import datetime
 import time
+import saveS3
 
 client_id = config.REDDIT_CLIENT_ID
 client_secret = config.REDDIT_CLIENT_SECRET
@@ -52,13 +53,11 @@ for submission in subreddit_instance.submissions():
             startdate = datasets_submissions_entries[0].created_utc
             enddate = submission.created_utc
             filename = base_data_file_name + "-submissions-" + str(round(startdate)) + "-" + str(round(enddate))
-            # with open(("data/" + filename + ".pickle"), 'wb') as f:
-            #     pickle.dump(datasets_submissions_entries, f)
-            # print(datasets_submissions_entries)
             json_data = [convert_submission_to_dict(x) for x in datasets_submissions_entries]
             print(json_data)
             with open(("data/" + filename + ".json"), "w", encoding='utf8') as outfile:
                 json.dump(json_data, outfile, ensure_ascii=False)
+                saveS3.save_to_s3(filename + ".json", json.dumps(json_data))
             datasets_submissions_entries = []
     except Exception as e:
         print(type(e))
@@ -72,3 +71,4 @@ if (i > 0 and len(datasets_submissions_entries) > 0) :
     json_data = [convert_submission_to_dict(x) for x in datasets_submissions_entries]
     with open(("data/" + filename + ".json"), "w", encoding='utf8') as outfile:
         json.dump(json_data, outfile, ensure_ascii=False)
+        saveS3.save_to_s3(filename + ".json", json.dumps(json_data))
